@@ -1,0 +1,11 @@
+.InputRow{
+   padding: 10px 0;
+}
+
+.InputRow input[type=text]{
+    width: 80%;
+}
+
+.Full{
+    width: 100%;
+}

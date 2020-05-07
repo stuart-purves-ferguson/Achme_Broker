@@ -1,0 +1,25 @@
+.TH{
+    font-weight: 700;
+    cursor: pointer;
+    display:inline-block;
+    text-align:center;
+  }
+  
+.TH:hover{
+    text-decoration: underline;
+  }
+  
+ .TH span{
+    transform: rotate(-90deg) scaleY(1.6);
+    display:inline-block;
+    margin-left:5px;
+    color: blue;
+  }
+  
+ .TH span.hidden{
+    visibility: hidden;
+  }
+  
+  .Full{
+    width: 100%;
+}
