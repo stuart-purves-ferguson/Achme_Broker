@@ -2,33 +2,8 @@
   text-align: center;
 }
 
-.App th{
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.App th:hover{
-  text-decoration: underline;
-}
-
-.App th span{
-  transform: rotate(-90deg) scaleY(1.6);
-  display:inline-block;
-  margin-left:5px;
-  color: blue;
-}
-
-.App th span.hidden{
-  visibility: hidden;
-}
-
-.App td, .App th{
+.App td{
   text-align:center;
-}
-
-.App footer{
-  margin-top:10px;
-  height:50px;
 }
 
 .App .Spacer{

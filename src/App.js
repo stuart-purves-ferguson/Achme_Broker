@@ -2,20 +2,24 @@ import React, { Component } from 'react';
 import Paper from '@material-ui/core/Paper';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableHead from '@material-ui/core/TableHead';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
-import Button from '@material-ui/core/Button';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Divider from '@material-ui/core/Divider';
-
+// import Table from '@material-ui/core/Table';
+// import TableBody from '@material-ui/core/TableBody';
+// import TableHead from '@material-ui/core/TableHead';
+// import TableCell from '@material-ui/core/TableCell';
+// import TableRow from '@material-ui/core/TableRow';
+// import Button from '@material-ui/core/Button';
+// import Radio from '@material-ui/core/Radio';
+// import RadioGroup from '@material-ui/core/RadioGroup';
+// import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Grid from '@material-ui/core/Grid';
+import Headers from './components/Headers/Headers';
+import DataRows from './components/DataRows/DataRows';
+import InputForm from './components/InputForm/InputForm';
+import RadioFilters from './components/RadioFilters/RadioFilters';
+import Footer from './components/Footer/Footer';
+import ResetButton from './components/ResetButton/ResetButton';
 import data from './data/data.json'
 // import axios from 'axios';
-
 import classes from './App.module.css';
 
 class App extends Component {
@@ -34,6 +38,7 @@ class App extends Component {
     },
     formValid: false,
     filterPolicies: null,
+    radios: 'none'
   }
 
   componentDidMount() {
@@ -48,7 +53,7 @@ class App extends Component {
     });
   }
 
-  restHandler = () => {
+  resetHandler = () => {
     this.setState({
       sortDirection: [null, null, null, null, null],
       policies: data.client.policies,
@@ -62,9 +67,13 @@ class App extends Component {
         insurer_name: ''
       },
       formValid: false,
-      filterPolicies: data.client.policies
+      filterPolicies: data.client.policies,
+      radios: 'none'
     });
+    
+    window.location.href='/';
   }
+
 
   handleFilterChange = (event) => {
 
@@ -87,11 +96,13 @@ class App extends Component {
     }
 
     this.setState({
-      policies: filtered
+      policies: filtered,
+      radios: event.target.value
     });
   }
 
   inputHandler = (event, field) => {
+
     const newObj = { ...this.state.newRecord };
     newObj[field] = event.target.value;
 
@@ -137,7 +148,8 @@ class App extends Component {
       },
       formValid: false,
       policies: newArr,
-      filterPolicies: newArr
+      filterPolicies: newArr,
+      filters: 'none'
     });
   }
 
@@ -153,7 +165,8 @@ class App extends Component {
 
     this.setState({
       policies: newArr,
-      filterPolicies: newArr
+      filterPolicies: newArr,
+      filters: 'none'
     });
   }
 
@@ -175,7 +188,9 @@ class App extends Component {
 
   //handle clicks on table headers
   headerClickHandler = (event) => {
-    console.log(event.target.id)
+
+    //sorting for 3 types (numbers, text and text that begins with a number)
+    //should be condensed (DRY) but code is reused a couple of times
 
     let policiesArr = [...this.state.policies];
     const dataType = event.target.id;
@@ -232,6 +247,7 @@ class App extends Component {
       });
     }
 
+    //sort directions
     let direction = 'DESC'
     if (!this.state.sortDirection[sortIndex] || this.state.sortDirection[sortIndex] === 'DESC') {
       direction = 'ASC';
@@ -249,132 +265,28 @@ class App extends Component {
 
   render() {
 
-    let headers = (
-      <TableCell>
-        <p>Loading...</p>
-      </TableCell>
-    );
-
-    if (this.state.headers) {
-      headers = this.state.headers.map((header, index) => {
-
-        //get nicely formatted display headeers to show on the page
-        const displayHeader = header.split('_').map((headerPart) => {
-          return headerPart.charAt(0).toUpperCase().concat(headerPart.slice(1));
-        }).join(' ');
-
-        //create a component tag in the correct format
-        let HeaderTag = header.replace('_', '');
-        HeaderTag = HeaderTag.charAt(0).toUpperCase().concat(HeaderTag.slice(1));
-
-        return (
-          <TableCell key={`id_${header}_${index}`}>
-            <HeaderTag is='custom' onClick={this.headerClickHandler} id={header} data-index={index}>
-              {displayHeader}{this.state.sortDirection[index] === 'ASC' ? <span>&gt;</span> : this.state.sortDirection[index] === 'DESC' ? <span>&lt;</span> : <span className={classes.hidden}>_</span>}
-            </HeaderTag>
-          </TableCell >
-        );
-      })
-    }
-
-    let customers = (
-      <TableRow>
-        <TableCell>
-          <p>Loading...</p>
-        </TableCell>
-      </TableRow>
-    );
-
-    if (this.state.policies) {
-
-      customers = this.state.policies.map((customer, index) => {
-        return (
-          <TableRow key={`id_${customer.customer_name}_${index}`}>
-            <TableCell><input type='text' value={customer.customer_name} onChange={(event) => this.changeDataHandler(event, 'customer_name', index)}></input></TableCell>
-            <TableCell><input type='text' value={customer.customer_address} onChange={(event) => this.changeDataHandler(event, 'customer_address', index)}></input></TableCell>
-            <TableCell><input type='text' value={customer.premium} onChange={(event) => this.changeDataHandler(event, 'premium', index)}></input></TableCell>
-            <TableCell><input type='text' value={customer.policy_type} onChange={(event) => this.changeDataHandler(event, 'policy_type', index)}></input></TableCell>
-            <TableCell><input type='text' value={customer.insurer_name} onChange={(event) => this.changeDataHandler(event, 'insurer_name', index)}></input></TableCell>
-            <TableCell><Button variant="contained" color="secondary" onClick={() => this.deleteHandler(index)}>Delete</Button></TableCell>
-          </TableRow>
-        );
-      })
-    }
     return (
       <div className={classes.App}>
-        <Container fixed>
-          <Paper elevation={3}>
-            <Typography variant="h2">
-              {this.state.client}
-            </Typography>
-            <p>Online policy database. Columns can be sorted by clicking on the column headings.</p>
-            <RadioGroup row style={{ display: 'block' }} onChange={this.handleFilterChange} defaultValue='none'>
-              <FormControlLabel
-                value='more'
-                control={
-                  <Radio
-                    color='primary'
-                  />
-                }
-                label='Premium £3000 or more'
-              />
-              <FormControlLabel
-                value='less'
-                control={
-                  <Radio
-                    color='primary'
-                  />
-                }
-                label='Premium less than £3000'
-              />
-              <FormControlLabel
-                value='none'
-                control={
-                  <Radio
+        <Container maxWidth="lg"  >
+          <Paper elevation={3} className={classes.Float}>
+            <Grid container item xs={12} justify="center">
+              <Grid item xs={12} >
+                <Typography variant="h2">
+                  {this.state.client}
+                </Typography>
+              </Grid>
+              <Grid item xs={10} >
+                <p>Online policy database. Columns can be sorted by clicking on the column headings.</p>
+              </Grid>
 
-                    color='primary'
-                  />
-                }
-                label='No filter'
-              />
-            </RadioGroup>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  {headers}
-                  <TableCell></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {customers}
-                <TableRow>
-                  <TableCell>
-                    <input type='text' onChange={(event) => this.inputHandler(event, 'customer_name')} value={this.state.newRecord['customer_name'] || ''} />
-                  </TableCell>
-                  <TableCell>
-                    <input type='text' onChange={(event) => this.inputHandler(event, 'customer_address')} value={this.state.newRecord['customer_address'] || ''} />
-                  </TableCell>
-                  <TableCell>
-                    <input type='text' onChange={(event) => this.inputHandler(event, 'premium')} value={this.state.newRecord['premium'] || ''} />
-                  </TableCell>
-                  <TableCell>
-                    <input type='text' onChange={(event) => this.inputHandler(event, 'policy_type')} value={this.state.newRecord['policy_type'] || ''} />
-                  </TableCell>
-                  <TableCell>
-                    <input type='text' onChange={(event) => this.inputHandler(event, 'insurer_name')} value={this.state.newRecord['insurer_name'] || ''} />
-                  </TableCell>
-                  <TableCell>
-                    <Button variant="contained" color="primary" onClick={this.addHandler} disabled={!this.state.formValid}>Add Policy</Button>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-            <div className={classes.Spacer}>
-              <Button variant="contained" color="primary" onClick={this.restHandler} >Reset</Button>
-            </div>
-            <footer>
-              <span>Created by Stuart Ferguson</span>
-            </footer>
+              <RadioFilters filterChange={this.handleFilterChange} radios={this.state.radios} />
+              <Headers headers={this.state.headers} sortDirection={this.state.sortDirection} headerClick={this.headerClickHandler} />
+              <DataRows policies={this.state.policies} del={this.deleteHandler} changed={this.changeDataHandler} policyKeys={Object.keys(this.state.newRecord)} />
+              <InputForm newRecord={this.state.newRecord} formValid={this.state.formValid} add={this.addHandler} input={this.inputHandler} />
+
+              <ResetButton resetButton={this.resetHandler} />
+              <Footer />
+            </Grid>
           </Paper>
         </Container>
       </div>
