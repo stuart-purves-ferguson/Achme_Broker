@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 import classes from './DataRows.module.css';
 import DataRow from './DataRow/DataRow'
 import Divider from '@material-ui/core/Divider';
-import Aux from '../../hoc/Aux';
+import Aux from '../../hoc/Aux_';
 
 const DataRows = (props) => {
 
