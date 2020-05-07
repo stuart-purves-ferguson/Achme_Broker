@@ -70,8 +70,8 @@ class App extends Component {
       filterPolicies: data.client.policies,
       radios: 'none'
     });
-    
-    window.location.href='/';
+
+    window.location.href='/build';
   }
 
 
@@ -149,7 +149,7 @@ class App extends Component {
       formValid: false,
       policies: newArr,
       filterPolicies: newArr,
-      filters: 'none'
+      radios: 'none'
     });
   }
 
@@ -166,7 +166,7 @@ class App extends Component {
     this.setState({
       policies: newArr,
       filterPolicies: newArr,
-      filters: 'none'
+      radios: 'none'
     });
   }
 
