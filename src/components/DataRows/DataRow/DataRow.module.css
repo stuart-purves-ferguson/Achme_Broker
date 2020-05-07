@@ -1,0 +1,17 @@
+.DataRow{
+    padding: 10px 0;
+}
+.DataRow strong{
+    text-transform: capitalize
+}
+.DataRow input[type=text]{
+    width: 80%;
+}
+.Mobile{
+    display:block;
+}
+@media (min-width:960px){
+    .Mobile{
+        display:none;
+    }
+}
