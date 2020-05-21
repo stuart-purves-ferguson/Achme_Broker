@@ -83,12 +83,12 @@ class App extends Component {
     switch (event.target.value) {
       case 'more':
         filtered = filterArr.filter((f) => {
-          return f.premium >= 3000
+          return f.premium >= 3000;
         });
         break;
       case 'less':
         filtered = filterArr.filter((f) => {
-          return f.premium < 3000
+          return f.premium < 3000;
         });
         break;
       default:
@@ -258,7 +258,6 @@ class App extends Component {
 
     this.setState({
       policies: policiesArr,
-      filterPolicies: policiesArr,
       sortDirection: sortDirectionNew
     });
   }
