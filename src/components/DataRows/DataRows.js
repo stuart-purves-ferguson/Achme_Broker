@@ -14,7 +14,7 @@ const DataRows = (props) => {
 
         customers = props.policies.map((customer, index) => {
             return (
-                <Aux key={`id_${customer.customer_name}_${index}`}>
+                <Aux key={`id__${index}`}>
                     <Grid container item xs={12}  className={classes.DataRows}>
 
                         <DataRow policyKeys={props.policyKeys} changer={props.changed} customer={customer} passedIndex={index} />

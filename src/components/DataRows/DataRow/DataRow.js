@@ -9,7 +9,7 @@ import classes from './DataRow.module.css';
 const DataRow = (props) => {
     const item = props.policyKeys.map((keye, index) => {
         return (
-            <Grid item xs={12} md={2} className={classes.DataRow} key={`${keye}_${index}`}>
+            <Grid item xs={12} md={2} className={classes.DataRow} key={`input_${props.passedIndex}_${index}`}>
                 <p className={classes.Mobile}><strong>{keye.replace('_', ' ')}</strong></p>
                 <input type='text' value={props.customer[keye]} onChange={(event) => props.changer(event, keye, props.passedIndex)}></input>
             </Grid>
